@@ -1,0 +1,15 @@
+<% @book.book_comments.each do |book_comment| %>
+  <li class="comment">
+    <div class="comment-body bb">
+    <div class="comment-text">
+      <div class="comment-author clearfix">
+        <a href="#" class="link-author"><%= post_comment.user.name %></a>
+        <span class="comment-meta">
+        </span>
+      </div>
+        <div class="comment-entry"><%= book_comment.comment %></div>
+        <div><%= link_to "Destroy", book_path(@show_book), method: :delete %></div>
+    </div>
+    </div>
+  </li>
+<% end %>

@@ -57,14 +57,47 @@
 
   <th><%= link_to "#{@show_book.title}", book_path(@show_book) %></th>
   <th><%= @show_book.body %></th>
-     <% if current_user.id == @show_book.user_id %>
-  <th><%= link_to "Edit", edit_book_path(@show_book) %></th>
-  <th><%= link_to "Destroy", book_path(@show_book), method: :delete %></th>
-     <% end %>
-  </tr>
-</tbody>
 
+<!-- いいね追加部分 --><!-- いいね追加部分 -->
+
+  <th>
+    <% if @show_book.favorited_by?(current_user) %>
+      <%= link_to book_favorites_path(@show_book.id), method: :delete do %>
+        <span class="glyphicon glyphicon-heart"><%= @show_book.favorites.count %></span>
+      <% end %>
+    <% else %>
+      <%= link_to book_favorites_path(@show_book.id), method: :post do %>
+        <span class="glyphicon glyphicon-heart-empty"><%= @show_book.favorites.count %></span>
+      <% end %>
+    <% end %>
+  </th>
+
+<!--ここまで追加済みいいね--><!--ここまで追加済みいいね-->
+
+  <th>
+     <%= link_to "コメント数 : #{@show_book.book_comments.count}", book_path(@show_book) %>
+  </th>
+  <% if current_user.id == @show_book.user_id %>
+      <th><%= link_to "Edit", edit_book_path(@show_book) %></th>
+      <th><%= link_to "Destroy", book_path(@show_book), method: :delete %></th>
+  <% end %>
+
+  </tr>
+ </tbody>
 </table>
+
+<!-- コメント追加部分 --><!-- コメント追加部分 -->
+
+  <%= form_for [@show_book, @book_comment] do |f| %>
+    <div class="row">
+        <div class="col-sm-12">
+            <%= f.text_area :comment, rows:'5', class:"form-control",placeholder: "コメントをここに" %>
+        </div>
+    </div>
+    <%= f.submit "送信する", class:"btn btn-lg btn-base-1 mt-20 pull-right" %>
+  <% end %>
+
+<!--ここまで追加済みコメント--><!--ここまで追加済みコメント-->
 
 </div>
 </div>

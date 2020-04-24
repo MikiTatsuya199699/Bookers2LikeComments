@@ -60,17 +60,38 @@
     </tr>
   </thead>
 
-<% @books.each do |book| %>
 <tbody>
+ <% @books.each do |book| %>
   <tr>
-    <%= link_to(book.user) do %>
-      <td><%= attachment_image_tag book.user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg", size:'60x60'%></td>
-    <% end %>
+      <td><%= link_to attachment_image_tag(book.user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg", size:'60x60'),book_path(book)%></td>
       <td><%= link_to "#{book.title}", book_path(book) %></td>
       <td><%= book.body %></td>
+
+<!-- いいね追加部分 --><!-- いいね追加部分 -->
+
+      <td>
+        <% if book.favorited_by?(current_user) %>
+            <%= link_to book_favorites_path(book), method: :delete do %>
+              <span class="glyphicon glyphicon-heart"><%= book.favorites.count %></span>
+            <% end %>
+          <% else %>
+            <%= link_to book_favorites_path(book), method: :post do %>
+              <span class="glyphicon glyphicon-heart-empty"><%= book.favorites.count %></span>
+            <% end %>
+        <% end %>
+     </td>
+
+<!--ここまで追加済みいいね--><!--ここまで追加済みいいね-->
+
+      <!-- コメント追加部分 --><!-- コメント追加部分 -->
+     <td>
+        <%= link_to "コメント数 : #{book.book_comments.count}", book_path(book) %>
+    </td>
+      <!--ここまで追加済みコメント--><!--ここまで追加済みコメント-->
   </tr>
+ <% end %>
+
 </tbody>
-<% end %>
 </table>
 </div>
 
